@@ -2,19 +2,26 @@
 
 @section('content')
 <div class="container">
-@foreach ($questions as $question)
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ $question->text }}</div>
-                @foreach ($answers as $answer)
-                <div class="panel-body">
-                    <input type="radio" value="{{ $answer->text }}" />
-                </div>
-                @endforeach
-            </div>
-          </div>
-      </div>
-@endforeach
+  <form method="POST" action="/">
+    {{ csrf_field() }}
+
+    @foreach ($questionnaire as $qa_set)
+
+      <h2>{{ $qa_set['question']->text }}</h2>
+
+      @foreach ($qa_set['answers'] as $answer)
+        <input type="radio"
+          name="{{ $qa_set['question']->text }}"
+          value="{{ $qa_set['question']->id }}-{{ $answer->rating }}" />
+        <label for="{{ $qa_set['question']->id }}-{{ $answer->rating }}">
+          {{ $answer->text }}
+        </label>
+      @endforeach
+
+    @endforeach
+
+    <input type="submit" value="Submit" />
+
+  </form>
 </div>
 @endsection

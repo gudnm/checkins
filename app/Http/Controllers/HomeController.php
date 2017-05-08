@@ -31,9 +31,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function storeAnswers(answers)
+    public function storeAnswers(Request $request)
     {
-        Log::write(answers);
+        foreach ($request as $answer) {
+            $user_answer = new UserAnswer;
+            $user_answer->user = $answer->user;
+            $user_answer->question = $answer->question;
+            $user_answer->answer = $answer->answer;
+            $user_answer->save();
+        }
         return view('home');
     }
 }

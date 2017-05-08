@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Question;
+use App\Answer;
 
 class CheckinController extends Controller
 {
@@ -17,12 +20,25 @@ class CheckinController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the questionnaire.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('checkin');
+        $questionnaire = array();
+        $questions = Question::all();
+
+        foreach ($questions as $question) {
+            $answers = Answer::where('question_id', $question->id)->get();
+            $qa_set = [
+                'question' => $question,
+                'answers' => $answers
+            ];
+
+            $questionnaire[] = $qa_set;
+        }
+
+        return view('checkin', compact(['questionnaire']));
     }
 }
