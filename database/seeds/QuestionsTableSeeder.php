@@ -11,6 +11,8 @@ class QuestionsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('questions')->insert([
+          'text' => 'Dummy Question 1'
+        ]);
     }
 }
