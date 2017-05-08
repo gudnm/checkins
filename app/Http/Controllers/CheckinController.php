@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class CheckinController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,17 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-    }
-
-    /**
-     * Store answers and show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function storeAnswers(answers)
-    {
-        Log::write(answers);
-        return view('home');
+        return view('checkin');
     }
 }
