@@ -2,6 +2,9 @@
 
 @section('content')
 <div class="container">
+  @isset($request)
+    {{ print_r($request, true) }}
+  @endisset
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">

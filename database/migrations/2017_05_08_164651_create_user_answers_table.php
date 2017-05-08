@@ -15,6 +15,8 @@ class CreateUserAnswersTable extends Migration
     {
         Schema::create('user_answers', function(Blueprint $table) {
           $table->increments('id');
+          $table->unsignedInteger('user_id');
+          $table->foreign('user_id')->references('id')->on('users');
           $table->unsignedSmallInteger('question_id');
           $table->foreign('question_id')->references('id')->on('questions');
           $table->unsignedSmallInteger('answer_id');
@@ -30,6 +32,6 @@ class CreateUserAnswersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('user_answers');
     }
 }

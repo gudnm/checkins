@@ -11,9 +11,9 @@
 
       @foreach ($qa_set['answers'] as $answer)
         <input type="radio"
-          name="{{ $qa_set['question']->text }}"
-          value="{{ $qa_set['question']->id }}-{{ $answer->rating }}" />
-        <label for="{{ $qa_set['question']->id }}-{{ $answer->rating }}">
+          name="{{ $qa_set['question']->id }}"
+          value="{{ $answer->id }}" />
+        <label for="{{ $qa_set['question']->id }}">
           {{ $answer->text }}
         </label>
       @endforeach

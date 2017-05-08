@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\UserAnswer;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -33,13 +35,16 @@ class HomeController extends Controller
      */
     public function storeAnswers(Request $request)
     {
-        foreach ($request as $answer) {
+        $answers = $request->except('_token');
+
+        foreach ($answers as $question_id => $answer_id) {
             $user_answer = new UserAnswer;
-            $user_answer->user = $answer->user;
-            $user_answer->question = $answer->question;
-            $user_answer->answer = $answer->answer;
+            $user_answer->user_id = Auth::user()->id;
+            $user_answer->question_id = $question_id;
+            $user_answer->answer_id = $answer_id;
             $user_answer->save();
         }
+
         return view('home');
     }
 }
