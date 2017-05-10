@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Http\Controllers\HomeController;
+
 
 class ExampleTest extends TestCase
 {
@@ -15,6 +17,8 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $this->assertTrue(true);
+        $hc = new HomeController();
+        $user_answer = $hc->makeAnswers(1, 1, 1);
+        $this->assertTrue($user_answer->user_id == 1);
     }
 }
