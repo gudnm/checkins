@@ -53,15 +53,39 @@ class HomeController extends Controller
         +------+-----------------------------+--------+---------------------+
         9 rows in set (0.00 sec)*/
 
-        $chart_data = DB::table('user_answers')
+        $collection = DB::table('user_answers')
             ->join('answers', 'answers.id', '=', 'user_answers.answer_id')
             ->join('questions', 'answers.question_id', '=', 'questions.id')
             ->where('user_answers.user_id', Auth::user()->id)
             ->select('questions.text', 'answers.rating',
             'user_answers.created_at')->orderby('created_at')->get();
 
-        /* Let's see what the format of $chart_data is
-        print_r($chart_data);
+        $chart_data = $this->formatRows($collection);
+
+        $chart = Charts::multi('bar', 'material')
+            // Setup the chart settings
+            ->title("")
+            // A dimension of 0 means it will take 100% of the space
+            ->responsive(true) // Width x Height
+            // This defines a preset of colors already done:)
+            ->template("material")
+            // You could always set them manually
+            // ->colors(['#2196F3', '#F44336', '#FFC107'])
+            // Setup what the values mean
+            ->labels(['One', 'Two', 'Three']);
+
+            // Setup the diferent datasets (this is a multi chart)
+            foreach ($chart_data as $question => $data) {
+                $chart->dataset($question, $data[0])->labels($data[1]);
+            }
+
+        return view('home', compact(['chart']));
+    }
+
+    public function formatRows($collection)
+    {
+        /* Let's see what the format of $collection is
+        print_r($collection);
 
         Illuminate\Support\Collection Object (
             [items:protected] => Array (
@@ -77,13 +101,14 @@ class HomeController extends Controller
         )*/
 
         // To chart, we need the data grouped by question
-        $rows = [];
-        foreach ($chart_data as $row) {
-            $rows[$row->text][0][] = $row->rating;
-            $rows[$row->text][1][] = $row->created_at;
+        // also we need separate arrays of ratings and date-times
+        $chart_data = [];
+        foreach ($collection as $row) {
+            $chart_data[$row->text][0][] = $row->rating;
+            $chart_data[$row->text][1][] = $row->created_at;
         }
-        /*
-        print_r($rows);
+        /* Let's verify this is what we need
+        print_r($chart_data);
         Array (
             [Are you feeling productive?] => Array (
                 [0] => Array (
@@ -105,25 +130,7 @@ class HomeController extends Controller
             ...
         )
         */
-
-        $chart = Charts::multi('bar', 'material')
-            // Setup the chart settings
-            ->title("")
-            // A dimension of 0 means it will take 100% of the space
-            ->responsive(true) // Width x Height
-            // This defines a preset of colors already done:)
-            ->template("material")
-            // You could always set them manually
-            // ->colors(['#2196F3', '#F44336', '#FFC107'])
-            // Setup what the values mean
-            ->labels(['One', 'Two', 'Three']);
-
-            // Setup the diferent datasets (this is a multi chart)
-            foreach ($rows as $question => $data) {
-                $chart->dataset($question, $data[0])->labels($data[1]);
-            }
-
-        return view('home', compact(['chart']));
+        return $chart_data;
     }
 
     /**
