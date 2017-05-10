@@ -137,15 +137,23 @@ class HomeController extends Controller
             $answers = $request->except('_token');
 
             foreach ($answers as $question_id => $answer_id) {
-                $user_answer = new UserAnswer;
-                $user_answer->user_id = Auth::user()->id;
-                $user_answer->question_id = $question_id;
-                $user_answer->answer_id = $answer_id;
+                $user_answer = $this->makeAnswers($answer_id,
+                    $question_id, Auth::user()->id);
                 $user_answer->save();
             }
         }
 
         return $this->index();
+    }
+
+    public function makeAnswers($answer_id, $question_id, $user_id)
+    {
+        $user_answer = new UserAnswer;
+        $user_answer->user_id = $user_id;
+        $user_answer->question_id = $question_id;
+        $user_answer->answer_id = $answer_id;
+
+        return $user_answer;
     }
 
 }
