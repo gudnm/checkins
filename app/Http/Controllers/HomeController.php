@@ -25,24 +25,11 @@ class HomeController extends Controller
 
     /**
      * Show user's history and a link for questionnaire.
-     * This will also check for a post request and save the data.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if (isset($request)) {
-            $answers = $request->except('_token');
-
-            foreach ($answers as $question_id => $answer_id) {
-                $user_answer = new UserAnswer;
-                $user_answer->user_id = Auth::user()->id;
-                $user_answer->question_id = $question_id;
-                $user_answer->answer_id = $answer_id;
-                $user_answer->save();
-            }
-        }
-
         /*
         Here's the query used to get all data required for the chart
 
@@ -137,6 +124,28 @@ class HomeController extends Controller
             }
 
         return view('home', compact(['chart']));
+    }
+
+    /**
+     * This will check for a post request and save the data.
+     *
+     * @return \Illuminate\Http\Response
+     */
+     public function storeAnswers(Request $request)
+     {
+        if (isset($request)) {
+            $answers = $request->except('_token');
+
+            foreach ($answers as $question_id => $answer_id) {
+                $user_answer = new UserAnswer;
+                $user_answer->user_id = Auth::user()->id;
+                $user_answer->question_id = $question_id;
+                $user_answer->answer_id = $answer_id;
+                $user_answer->save();
+            }
+        }
+
+        return $this->index();
     }
 
 }
