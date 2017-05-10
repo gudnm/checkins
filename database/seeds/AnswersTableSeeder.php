@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Question;
 
 class AnswersTableSeeder extends Seeder
 {
@@ -11,12 +12,17 @@ class AnswersTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 5; $i++) {
-            DB::table('answers')->insert([
-              'text' => 'Dummy asnwer ' . $i,
-              'rating' => $i,
-              'question_id' => 1
-            ]);
+        $questions = Question::all();
+        $answers = ['Not at all', 'Not so much', 'I do', 'Most definitely'];
+
+        foreach ($questions as $question) {
+            foreach ($answers as $i => $answer) {
+                DB::table('answers')->insert([
+                  'text' => $answer,
+                  'rating' => $i + 1,
+                  'question_id' => $question->id
+                ]);
+            }
         }
     }
 }

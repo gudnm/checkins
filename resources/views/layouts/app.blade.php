@@ -13,6 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    {!! Charts::assets(['google']) !!}
+
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([

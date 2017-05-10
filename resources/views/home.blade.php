@@ -2,9 +2,6 @@
 
 @section('content')
 <div class="container">
-  @isset($request)
-    {{ print_r($request, true) }}
-  @endisset
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
@@ -23,7 +20,9 @@
                 <div class="panel-heading">Your history</div>
 
                 <div class="panel-body">
-                    ...is here
+                    @if (count($chart) > 0)
+                        {!! $chart->render() !!}
+                    @endif
                 </div>
             </div>
         </div>

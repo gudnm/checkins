@@ -14,6 +14,6 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
-Route::post('/', 'HomeController@storeAnswers');
+Route::post('/', 'HomeController@index');
 
 Route::get('/checkin', 'CheckinController@index');

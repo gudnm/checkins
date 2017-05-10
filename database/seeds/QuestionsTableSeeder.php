@@ -12,7 +12,13 @@ class QuestionsTableSeeder extends Seeder
     public function run()
     {
         DB::table('questions')->insert([
-          'text' => 'Dummy Question 1'
+            'text' => 'Are you feeling productive?'
+        ]);
+        DB::table('questions')->insert([
+            'text' => 'Are you feeling social?'
+        ]);
+        DB::table('questions')->insert([
+            'text' => 'Are you excited?'
         ]);
     }
 }
