@@ -13,7 +13,7 @@ class AnswersTableSeeder extends Seeder
     public function run()
     {
         $questions = Question::all();
-        $answers = ['Not at all', 'Not so much', 'I do', 'Most definitely'];
+        $answers = ['Not at all', 'Not so much', 'Mostly', 'Definitely yes'];
 
         foreach ($questions as $question) {
             foreach ($answers as $i => $answer) {
