@@ -12,7 +12,7 @@
       @foreach ($qa_set['answers'] as $answer)
         <input type="radio"
           name="{{ $qa_set['question']->id }}"
-          value="{{ $answer->id }}" />
+          value="{{ $answer->id }}" required />
         <label for="{{ $qa_set['question']->id }}">
           {{ $answer->text }}
         </label>
